@@ -4,14 +4,14 @@ A command-line inventory management application built in Python, developed as pa
 
 ## Project Structure
 IMS/
-├── main.py          # Entry point, CLI menu
-├── inventory.py     # Inventory class
-├── decorators.py    # @log_operation decorator
-├── exceptions.py    # Custom exception hierarchy
-├── utils.py         # Filtering and sorting functions
-└── models/
-├── init.py
-└── item.py      # Item (abstract), Electronics, Grocery
+├── main.py          # Entry point, CLI menu    
+├── inventory.py     # Inventory class      
+├── decorators.py    # @log_operation decorator     
+├── exceptions.py    # Custom exception hierarchy      
+├── utils.py         # Filtering and sorting functions      
+└── models/     
+├── init.py     
+└── item.py      # Item (abstract), Electronics, Grocery   
 
 ## Features
 
