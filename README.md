@@ -3,7 +3,7 @@
 A command-line inventory management application built in Python, developed as part of a recruiting assignment for Autodesk.
 
 ## Project Structure
-IMS/
+IMS/    
 ├── main.py          # Entry point, CLI menu    
 ├── inventory.py     # Inventory class      
 ├── decorators.py    # @log_operation decorator     
