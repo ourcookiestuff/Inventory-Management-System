@@ -1,6 +1,7 @@
 from decorators import log_operation
-from models import Item
+from models import Item, Electronics, Grocery
 from exceptions import DuplicateItemException, ItemNotFoundException, InvalidItemException
+import csv
 
 class Inventory:
     def __init__(self) -> None:
@@ -59,3 +60,52 @@ class Inventory:
     
     def __iter__(self):
         return iter(self._items.values())
+
+    def write_to_file(self, filename: str) -> None:
+        fieldnames = ['item_id', 'category', 'name', 'quantity', 'price', 'extra']
+        try:
+            with open(filename, 'w', newline='') as f:
+                writer = csv.DictWriter(f, fieldnames=fieldnames)
+                writer.writeheader()
+                for item in self._items.values():
+                    writer.writerow({
+                        'item_id': item.item_id,
+                        'category': item.category(),
+                        'name': item.name,
+                        'quantity': item.quantity,
+                        'price': item.price,
+                        'extra': item.warranty_months if isinstance(item, Electronics) else item.expiration_date
+                    })
+        except OSError as e:
+            raise InventoryException(f"Cannot open file '{filename}'") from e
+
+    def read_from_file(self, filename: str) -> None:
+        try:
+            with open(filename, 'r', newline='') as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    category = row['category']
+                    if category == 'Electronics':
+                        item = Electronics(
+                            item_id=row['item_id'],
+                            name=row['name'],
+                            quantity=int(row['quantity']),
+                            price=float(row['price']),
+                            warranty_months=int(row['extra'])
+                        )
+                    elif category == 'Grocery':
+                        item = Grocery(
+                            item_id=row['item_id'],
+                            name=row['name'],
+                            quantity=int(row['quantity']),
+                            price=float(row['price']),
+                            expiration_date=row['extra']
+                        )
+                    else:
+                        raise InventoryException(f"Unknown category '{category}'")
+                    try:
+                        self.add_item(item)
+                    except DuplicateItemException:
+                        pass 
+        except OSError as e:
+            raise InventoryException(f"Cannot open file '{filename}'") from e
