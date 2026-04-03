@@ -1,5 +1,6 @@
 from decorators import log_operation
 from models import Item
+from exceptions import DuplicateItemException, ItemNotFoundException, InvalidItemException
 
 class Inventory:
     def __init__(self) -> None:
@@ -8,20 +9,23 @@ class Inventory:
     @log_operation
     def add_item(self, item: Item) -> None:
         if item.item_id in self._items:
-            raise ValueError(f"Item with ID {item.item_id} already exists.")
+            raise DuplicateItemException(item.item_id)
         self._items[item.item_id] = item
 
     @log_operation
     def remove_item(self, item_id: str) -> None:
         if item_id not in self._items:
-            raise ValueError(f"Item with ID {item_id} does not exist.")
+            raise ItemNotFoundException(item_id)
         del self._items[item_id]
 
     @log_operation
-    def update_item(self, item_id: str, quantity: int) -> None:
+    def update_quantity(self, item_id: str, quantity: int) -> None:
         if item_id not in self._items:
-            raise ValueError(f"Item with ID {item_id} not found.")
-        self._items[item_id].quantity = quantity
+            raise ItemNotFoundException(item_id)
+        try:
+            self._items[item_id].quantity = quantity
+        except InvalidItemException as e:
+            raise InvalidItemException("quantity", quantity) from e
 
     def display_inventory(self) -> None:
         if not self._items:

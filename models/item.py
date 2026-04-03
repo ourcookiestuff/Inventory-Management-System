@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from exceptions import InvalidItemException
 
 class Item(ABC):
     __slots__ = ('_item_id', '_name', '_quantity', '_price')
@@ -30,7 +31,7 @@ class Item(ABC):
     @quantity.setter
     def quantity(self, value: int) -> None:
         if value < 0:
-            raise ValueError("Quantity cannot be negative.")
+            raise InvalidItemException("quantity", value)
         self._quantity = value
 
     @property
@@ -40,10 +41,9 @@ class Item(ABC):
     @price.setter
     def price(self, value: float) -> None:
         if value < 0:
-            raise ValueError("Price cannot be negative.")
+            raise InvalidItemException("price", value)
         self._price = value
 
-    
     @abstractmethod
     def display(self) -> None:
         pass
