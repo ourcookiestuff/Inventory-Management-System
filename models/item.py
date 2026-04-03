@@ -77,7 +77,7 @@ class Electronics(Item):
         self._warranty_months = value
     
     def display(self) -> None:
-        return f"{self._name} (Electronics) — warranty: {self._warranty_months} months, price: {self._price:.2f}, qty: {self._quantity}"
+        return f"[Electronics] ID: {self._item_id} | Name: {self._name} | Qty: {self._quantity} | Price: {self._price} | Warranty: {self._warranty_months} months"
     
     def category(self) -> str:
         return "Electronics"
@@ -101,7 +101,7 @@ class Grocery(Item):
         self._expiration_date = value
 
     def display(self) -> None:
-        return f"{self._name} (Grocery) — expiration: {self._expiration_date}, price: {self._price:.2f}, qty: {self._quantity}"
-
+        return f"[Grocery] ID: {self._item_id} | Name: {self._name} | Qty: {self._quantity} | Price: {self._price} | Expires: {self._expiration_date}"
+    
     def category(self) -> str:
         return "Grocery"

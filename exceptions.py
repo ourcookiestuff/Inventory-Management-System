@@ -13,4 +13,4 @@ class DuplicateItemException(InventoryException):
 
 class InvalidItemException(InventoryException):
     def __init__(self, field: str, value) -> None:
-        super().__init__(f"Invalid value for {field}: {value}")
+        super().__init__(f"Quantity must be a non-negative integer." if field == "quantity" else f"Invalid value for '{field}': {value}")
