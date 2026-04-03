@@ -106,3 +106,39 @@ class Grocery(Item):
 
     def category(self) -> str:
         return "Grocery"
+    
+
+class Inventory:
+    def __init__(self) -> None:
+        self._items: dict[str, Item] = {}
+
+    def add_item(self, item: Item) -> None:
+        if item.item_id in self._items:
+            raise ValueError(f"Item with ID {item.item_id} already exists.")
+        self._items[item.item_id] = item
+
+    def remove_item(self, item_id: str) -> None:
+        if item_id not in self._items:
+            raise ValueError(f"Item with ID {item_id} does not exist.")
+        del self._items[item_id]
+
+    def update_item(self, item_id: str, quantity: int) -> None:
+        if item_id not in self._items:
+            raise ValueError(f"Item with ID {item_id} not found.")
+        self._items[item_id].quantity = quantity
+
+    def display_inventory(self) -> None:
+        if not self._items:
+            print("Inventory is empty.")
+            return
+        for item in self._items.values():
+            print(item.display())
+
+    def __len__(self) -> int:
+        return len(self._items)
+    
+    def __contains__(self, item_id: str) -> bool:
+        return item_id in self._items
+    
+    def __iter__(self):
+        return iter(self._items.values())
